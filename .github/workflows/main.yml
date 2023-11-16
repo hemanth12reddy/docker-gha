@@ -11,31 +11,18 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4.1.1
       
-      - name: Docker Version
-        run: docker version
-
-      - name: Build Docker Image
-        run: |
-          echo "the files in this directory are" ls
-          ls -a
-      - name: Docker Images
-        run:  docker images -a
-
-      - name : Git Runner number
-        run: echo "the git runner number is $GITHUB_RUN_NUMBER "
       - name: Docker build
-        run: docker build -t gha-image:$GITHUB_RUN_NUMBER
-          
-      
-      # - name: Docker Login
-      #   uses: docker/login-action@v3.0.0
-      #   with:
-      #     username: ${{ secrets.DOCKER_USERNAME }}
-      #     password: ${{ secrets.DOCKER_PASSWORD }}
+        run: docker build -t gha-image:latest .
 
-      # - name: Docker build and push
-      #   uses: cloudposse/github-action-docker-build-push@1.14.0
+      - name: Taging a Docker image
+        run: |
+          docker tag gha-image:latest hemanth12reddy/git-hub-actions:$GITHUB_RUN_NUMBER
+          
+      - name: Docker Login
+        uses: docker/login-action@v3.0.0
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
       
-      # - name: Docker build and push
-      #   uses: cloudposse/github-action-docker-build-push@1.14.0
-        
+      - name: Docker push
+        run: docker push hemanth12reddy/git-hub-actions:$GITHUB_RUN_NUMBER
