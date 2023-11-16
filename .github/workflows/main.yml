@@ -14,8 +14,11 @@ jobs:
 
       - name: Build Docker Image
         run: |
-          docker build -t gha-image:${{ GITHUB_RUN_NUMBER }} .
+          docker build -t gha-image:$GITHUB_RUN_NUMBER
           echo "the files in this directory are $((ls))"
+          docker images -a
+        env:
+            GITHUB_RUN_NUMBER: ${{ github.run_number }}
           
       
       # - name: Docker Login
