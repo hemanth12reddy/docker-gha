@@ -5,6 +5,8 @@ on: [ "workflow_dispatch", "push" ]
 jobs:
   job1:
     runs-on: ubuntu-latest
+    env:
+        GITHUB_RUN_NUMBER: ${{ github.run_number }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4.1.1
@@ -16,10 +18,13 @@ jobs:
         run: |
           echo "the files in this directory are" ls
           ls -a
-          docker images -a
-          docker build -t gha-image:$GITHUB_RUN_NUMBER
-        env:
-            GITHUB_RUN_NUMBER: ${{ github.run_number }}
+      - name: Docker Images
+        run:  docker images -a
+
+      - name : Git Runner number
+        run: echo "the git runner number is $GITHUB_RUN_NUMBER "
+      - name: Docker build
+        run: docker build -t gha-image:$GITHUB_RUN_NUMBER
           
       
       # - name: Docker Login
