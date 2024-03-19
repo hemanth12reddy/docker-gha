@@ -72,3 +72,5 @@ jobs:
         run: |
           source .env  # Load the environment file
           echo "The captured IP is: $IP"
+
+
