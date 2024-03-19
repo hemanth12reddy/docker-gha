@@ -55,7 +55,8 @@ jobs:
       - name: Add ip of runner to access the ACR
         run: |
           IP=$(curl http://myexternalip.com/raw | tail -n 1 | cut -d' ' -f4)
-          az acr network-rule add -n ${{  secrets.REGISTRY_NAME  }} --ip-address $IP 
+          echo "my ip is $IP"
+          az acr network-rule add -n ${{  secrets.REGISTRY_NAME  }} --ip-address $IP
       
       - name: Get External IP
         run: |
