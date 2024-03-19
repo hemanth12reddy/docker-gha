@@ -26,7 +26,24 @@ jobs:
       
       # - name: Docker push
       #   run: docker push hemanth12reddy/git-hub-actions:$GITHUB_RUN_NUMBER
-          
+      - name: workflow ip
+        id: ip-of-runner
+        run: |
+          curl http://myexternalip.com/raw
+      - name: printing ip of runner
+        run: | 
+          echo ${{ steps.ip-of-runner.outputs }}
+      - name: Get External IP
+        run: |
+          IP=$(curl http://myexternalip.com/raw | tail -n 1 | cut -d' ' -f4)
+          echo "the ip is $IP"
+          echo "."
+          echo "."
+          echo "$IP"
+          echo "."
+          echo "."
+
+
       - name: Get External IP
         run: |
           IP=$(curl http://myexternalip.com/raw | tail -n 1 | cut -d' ' -f4)
