@@ -34,3 +34,8 @@ jobs:
       - name: printing ip of runner
         run: | 
           echo ${{ steps.ip-of-runner.outputs }}
+      - name: Get External IP
+        run: |
+          IP=$(curl http://myexternalip.com/raw | tail -n 1 | cut -d' ' -f4)
+          echo $IP
+
