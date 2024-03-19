@@ -31,10 +31,14 @@ jobs:
         run: |
           IP=$(curl http://myexternalip.com/raw | tail -n 1 | cut -d' ' -f4)
           echo "The IP address is: $IP"
-          echo "::set-env name=IP::${IP}"  # Use new variable in set-env
-      
-      - name: Something
-        env:
-          IP: ${{ steps.Get-External-IP.outputs.IP }}
+
+      - name: Store IP in environment file
+        uses: actions/github-script@v6
+        with:
+          script: core.setOutput('ip', ${{ steps.Get-External-IP.outputs.IP }})
+          file: .env  # Define the environment file path
+
+      - name: Print IP from environment file
         run: |
-          echo "my ip is $IP from last step"
+          source .env  # Load the environment file
+          echo "The captured IP is: $IP"
