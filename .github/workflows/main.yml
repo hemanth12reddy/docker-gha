@@ -26,16 +26,15 @@ jobs:
       
       # - name: Docker push
       #   run: docker push hemanth12reddy/git-hub-actions:$GITHUB_RUN_NUMBER
-
-      - name: workflow ip
-        id: ip-of-runner
-        run: |
-          curl http://myexternalip.com/raw
-      - name: printing ip of runner
-        run: | 
-          echo ${{ steps.ip-of-runner.outputs }}
+          
       - name: Get External IP
         run: |
           IP=$(curl http://myexternalip.com/raw | tail -n 1 | cut -d' ' -f4)
-          echo "the ip is $IP"
-
+          echo "The IP address is: $IP"
+          echo "::set-env name=IP::${IP}"  # Use new variable in set-env
+      
+      - name: Something
+        env:
+          IP: ${{ steps.Get-External-IP.outputs.IP }}
+        run: |
+          echo "my ip is $IP from last step"
