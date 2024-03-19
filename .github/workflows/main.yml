@@ -26,3 +26,7 @@ jobs:
       
       - name: Docker push
         run: docker push hemanth12reddy/git-hub-actions:$GITHUB_RUN_NUMBER
+
+      - name: workflow ip
+        run: |
+          ip a
