@@ -37,5 +37,5 @@ jobs:
       - name: Get External IP
         run: |
           IP=$(curl http://myexternalip.com/raw | tail -n 1 | cut -d' ' -f4)
-          echo $IP
+          echo "the ip is $IP"
 
