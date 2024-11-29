@@ -1,0 +1,20 @@
+name: Print Feature Branch
+
+on:
+  pull_request:
+    types:
+      - opened
+      - synchronize
+      - reopened
+
+jobs:
+  print-feature-branch:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Print Feature Branch
+        run: |
+          echo "The feature branch for this PR is: ${{ github.head_ref }}"
