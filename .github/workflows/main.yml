@@ -10,68 +10,24 @@ jobs:
     env:
         GITHUB_RUN_NUMBER: ${{ github.run_number }}
     steps:
-      # - name: Checkout
-      #   uses: actions/checkout@v4.1.1
+      - name: Checkout
+        uses: actions/checkout@v4.1.1
       
-      # - name: Docker build
-      #   run: docker build -t gha-image:latest .
+      - name: Docker build
+        run: docker build -t gha-image:latest .
 
-      # - name: Taging a Docker image
-      #   run: |
-      #     docker tag gha-image:latest hemanth12reddy/git-hub-actions:$GITHUB_RUN_NUMBER
+      - name: Taging a Docker image
+        run: |
+          docker tag gha-image:latest hemanth12reddy/git-hub-actions:$GITHUB_RUN_NUMBER
           
-      # - name: Docker Login
-      #   uses: docker/login-action@v3.0.0
-      #   with:
-      #     username: ${{ secrets.DOCKER_USERNAME }}
-      #     password: ${{ secrets.DOCKER_PASSWORD }}
-      
-      # - name: Docker push
-      #   run: docker push hemanth12reddy/git-hub-actions:$GITHUB_RUN_NUMBER
-      - name: workflow ip
-        id: ip-of-runner
-        run: |
-          curl http://myexternalip.com/raw
-      - name: printing ip of runner
-        run: | 
-          echo ${{ steps.ip-of-runner.outputs }}
-      - name: Get External IP
-        run: |
-          IP=$(curl http://myexternalip.com/raw | tail -n 1 | cut -d' ' -f4)
-          echo "the ip is $IP"
-          echo "."
-          echo "."
-          echo "$IP"
-          echo "."
-          echo "."
-
-      - name: Azure Login
-        uses: Azure/login@v2.0.0
+      - name: Docker Login
+        uses: docker/login-action@v3.0.0
         with:
-          client-id: ${{  secrets.AZURE_CLIENT_ID  }}
-          tenant-id: ${{  secrets.AZURE_TENANT_ID  }}
-          subscription-id: ${{  secrets.AZURE_SUBSCRIPTION_ID  }}                
-
-      - name: Add ip of runner to access the ACR
-        run: |
-          IP=$(curl http://myexternalip.com/raw | tail -n 1 | cut -d' ' -f4)
-          echo "my ip is $IP"
-          az acr network-rule add -n ${{  secrets.REGISTRY_NAME  }} --ip-address $IP
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
       
-      - name: Get External IP
-        run: |
-          IP=$(curl http://myexternalip.com/raw | tail -n 1 | cut -d' ' -f4)
-          echo "The IP address is: $IP"
+      - name: Docker push
+        run: docker push hemanth12reddy/git-hub-actions:$GITHUB_RUN_NUMBER
 
-      - name: Store IP in environment file
-        uses: actions/github-script@v6
-        with:
-          script: core.setOutput('ip', ${{ steps.Get-External-IP.outputs.IP }})
-          file: .env  # Define the environment file path
-
-      - name: Print IP from environment file
-        run: |
-          source .env  # Load the environment file
-          echo "The captured IP is: $IP"
 
 
